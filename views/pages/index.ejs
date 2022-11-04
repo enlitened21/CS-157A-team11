@@ -38,9 +38,9 @@
 
 <body class="main-layout ">
     <!-- loader  -->
-    <div class="loader_bg">
+    <!-- <div class="loader_bg">
         <div class="loader"><img src="images/loading.gif" alt="#" /></div>
-    </div>
+    </div> -->
     <!-- end loader -->
     <!-- header -->
     <header>
@@ -63,8 +63,8 @@
                             <div class="limit-box">
                                 <nav class="main-menu">
                                     <ul class="menu-area-main">
-                                        <li class="active"> <a href="index.html">Home</a> </li>
-                                        <li> <a href="about.html">Link 1</a> </li>
+                                        <li class="active"> <a href="pages/index.ejs">Home</a> </li>
+                                        <li> <a href="">Cart</a> </li>
                                         <li><a href="brand.html">Link 2</a></li>
                                         <li><a href="special.html">Link 3</a></li>
                                         <li><a href="contact.html">Link 4</a></li>
@@ -77,13 +77,6 @@
                         </div>
                     </div>
                     <div class="col-md-6 offset-md-6">
-                        <div class="location_icon_bottum">
-                            <ul>
-                                <li><img src="icon/call.png" />(+71)9876543109</li>
-                                <li><img src="icon/email.png" />demo@gmail.com</li>
-                                <li><img src="icon/loc.png" />Location</li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -161,7 +154,7 @@
             <div class="row">
                 <div class="col-xl-5 col-lg-5 col-md-5 co-sm-l2">
                     <div class="about_img">
-                        <figure><img src="images/about.png" alt="img" /></figure>
+                        <figure><img src="images/donate.png" alt="img" /></figure>
                     </div>
                 </div>
                 <div class="col-xl-7 col-lg-7 col-md-7 co-sm-l2">
@@ -199,7 +192,19 @@
                             <img src="images/ <%= item.image %>" alt="img" />
                             <span><%= item.name %></span>
                             <span>Category: <%= item.category %></span>
+
+                            <form action="/add_to_cart" method="post">
+                                <input type="hidden" name="id" value="<%= item.id %>">
+                                <input type="hidden" name="name" value="<%= item.name %>">
+                                <input type="hidden" name="category" value="<%= item.category %>">
+                                <input type="hidden" name="image" value="<%= item.image %>">
+                                <input type="submit" value="Add to cart" class="btn btn-primary">
+                            </form>
                         </div>
+
+                        
+
+
                     </div>
                     <% }) %>
                     <div class="col-md-12">
