@@ -33,16 +33,37 @@
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+
+      <style>
+        .login-form {
+            width: 340px;
+            margin: 50px auto;
+              font-size: 15px;
+        }
+        .login-form form {
+            margin-bottom: 15px;
+            background: #f7f7f7;
+            box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+        }
+        .login-form h2 {
+            margin: 0 0 15px;
+        }
+        .form-control, .btn {
+            min-height: 38px;
+            border-radius: 2px;
+        }
+        .btn {        
+            font-size: 15px;
+            font-weight: bold;
+        }
+        </style>
+
 </head>
 <!-- body -->
 
-<body class="main-layout">
-    <!-- loader  -->
-    <div class="loader_bg">
-        <div class="loader"><img src="images/loading.gif" alt="#" /></div>
-    </div>
-    <!-- end loader -->
-    <!-- header -->
+<body class="main-layout ">
+    
     <header>
         <!-- header inner -->
         <div class="header">
@@ -53,7 +74,7 @@
                         <div class="full">
                             <div class="center-desk">
                                 <div class="logo">
-                                    <a href="index.html"><img src="images/logo.png" alt="#"></a>
+                                    <a href="/index"><h2>DONATIONS APP<h2></a>
                                 </div>
                             </div>
                         </div>
@@ -63,11 +84,10 @@
                             <div class="limit-box">
                                 <nav class="main-menu">
                                     <ul class="menu-area-main">
-                                        <li class="active"> <a href="index.html">Home</a> </li>
-                                        <li> <a href="about.html">About</a> </li>
-                                        <li><a href="brand.html">Brand</a></li>
-                                        <li><a href="special.html">Specials</a></li>
-                                        <li><a href="contact.html">Contact Us</a></li>
+                                        <li class="active"> <a href="/index">Home</a> </li>
+                                        <li> <a href="/cart">Cart</a> </li>
+                                        <li><a href="special.html">Link 3</a></li>
+                                        <li><a href="contact.html">Link 4</a></li>
                                         <li class="last">
                                             <a href="#"><img src="images/search_icon.png" alt="icon" /></a>
                                         </li>
@@ -77,65 +97,33 @@
                         </div>
                     </div>
                     <div class="col-md-6 offset-md-6">
-                        <div class="location_icon_bottum">
-                            <ul>
-                                <li><img src="icon/call.png" />(+71)9876543109</li>
-                                <li><img src="icon/email.png" />demo@gmail.com</li>
-                                <li><img src="icon/loc.png" />Location</li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- end header inner -->
     </header>
-    <!-- end header -->
-    <div class="brand_color">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="titlepage">
-                        <h2>About</h2>
-                    </div>
-                </div>
+    
+    <!-- Login form -->
+    <div class="login-form">
+        <form action="/" method="post">
+            <h2 class="text-center">Log in</h2>       
+            <div class="form-group">
+                <input type="email" class="form-control" placeholder="Username" required="required" name="username">
             </div>
-        </div>
-    </div>
-
-    <!-- about -->
-    <div class="about">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-5 col-lg-5 col-md-5 co-sm-l2">
-                    <div class="about_img">
-                        <figure><img src="images/about.png" alt="img" /></figure>
-                    </div>
-                </div>
-                <div class="col-xl-7 col-lg-7 col-md-7 co-sm-l2">
-                    <div class="about_box">
-                        <span>Our Mobile Shop</span>
-                        <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of It is a long established fact that a reader will be distracted by the </p>
-
-                    </div>
-                </div>
-                <div class="col-xl-7 col-lg-7 col-md-7 co-sm-l2">
-                    <div class="about_box_ ">
-                        <span>Our Mobile Shop</span>
-                        <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of It is a long established fact that a reader will be distracted by the </p>
-
-                    </div>
-                </div>
-                <div class="col-xl-5 col-lg-5 col-md-5 co-sm-l2">
-                    <div class="about_img">
-                        <figure><img src="images/about.png" alt="img" /></figure>
-                    </div>
-                </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="Password" required="required" name="password">
             </div>
-        </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block" value="LOGIN">Log in</button>
+            </div>      
+        </form>
+        <p class="text-center"><a href="#">Create an Account</a></p>
     </div>
-    </div>
-    <!-- end about -->
+
+
+
+
 
     <!-- footer -->
     <footer>
@@ -146,21 +134,15 @@
                         <div class="footer-box">
                             <div class="headinga">
                                 <h3>Address</h3>
-                                <span>Healing Center, 176 W Streetname,New York, NY 10014, US</span>
-                                <p>(+71) 8522369417
-                                    <br>demo@gmail.com</p>
+                                <span>San Jose State University</span>
+                                <p>1111111111
+                                    <br>team11@gmail.com</p>
                             </div>
-                            <ul class="location_icon">
-                                <li> <a href="#"><i class="fa fa-facebook-f"></i></a></li>
-                                <li> <a href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li> <a href="#"><i class="fa fa-instagram"></i></a></li>
-
-                            </ul>
+                            
                             <div class="menu-bottom">
                                 <ul class="link">
                                     <li> <a href="#">Home</a></li>
                                     <li> <a href="#">About</a></li>
-                                    
                                     <li> <a href="#">Brand </a></li>
                                     <li> <a href="#">Specials  </a></li>
                                     <li> <a href="#"> Contact us</a></li>
@@ -168,11 +150,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="copyright">
-                <div class="container">
-                    <p>© 2019 All Rights Reserved. Design By<a href="https://templates.beatsnoop.com/"> Free Html Templates</a></p>
                 </div>
             </div>
         </div>
