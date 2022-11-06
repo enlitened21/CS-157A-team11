@@ -106,8 +106,14 @@
     
     <!-- Login form -->
     <div class="login-form">
-        <form action="/" method="post">
-            <h2 class="text-center">Log in</h2>       
+        <form action="/signUp" method="post">
+            <h2 class="text-center">Sign up</h2> 
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="First Name" required="required" name="first_name">
+            </div>      
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Last Name" required="required" name="last_name">
+            </div>    
             <div class="form-group">
                 <input type="email" class="form-control" placeholder="Username" required="required" name="username">
             </div>
@@ -115,10 +121,9 @@
                 <input type="password" class="form-control" placeholder="Password" required="required" name="password">
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-block" value="LOGIN">Log in</button>
+                <button type="submit" class="btn btn-primary btn-block" value="LOGIN">Sign Up</button>
             </div>      
         </form>
-        <p class="text-center"><a href="/signUp">Create an Account</a></p>
     </div>
 
 
