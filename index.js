@@ -106,7 +106,7 @@ app.post('/add_to_cart', auth.isAuthorized, async function(req, res){
 
 })
 
-app.get('/cart', auth.isAuthorized, function(req, res){
+app.get('/cart', auth.isAuthorized, async function(req, res){
     //var cart = req.session.cart;
     
     res.render('pages/cart', {cart:cart});
@@ -152,6 +152,33 @@ app.post('/signUp', async function(req, res) {
         res.redirect('/signUp')
       }
       res.end();
+})
+
+//Create Listing get request
+app.get('/createListing', auth.isAuthorized, async function(req, res){
+    res.render('pages/createListing');
+
+})
+
+
+app.post('/createListing', auth.isAuthorized, async function(req, res){
+    var product_name = req.body.product_name;
+    var product_category = req.body.product_category;
+    var product_image = req.body.product_image;
+
+    const products = await Product.findAll({
+        where: {
+            name: product_name
+        }
+    });
+
+    if (products.length == 0) {
+        const newProduct = await Product.create({ name: product_name, category: product_category, image: product_image });
+        res.redirect('/index')
+    } else{
+        res.redirect('/createListing')
+    }
+    res.end();
 })
 
 console.log("server running on port 8080");
