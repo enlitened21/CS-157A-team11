@@ -14,5 +14,19 @@ module.exports = (sequelize,DataTypes)  =>{
         timestamps: false
     });
     
+    Cart.associate = models => {
+        Cart.belongsTo(models.Customer, {
+            foreignKey: {
+                allowNull: false,
+                name: "customer_id"
+            }
+        }),
+        Cart.belongsToMany(models.Product, {
+            through: models.CartProduct,
+            foreignKey: 'cart_id',
+            timestamps: false
+        });
+    };
+
     return Cart;
 }
