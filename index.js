@@ -135,6 +135,7 @@ app.post('/signUp', async function (req, res) {
 
 //Create Listing get request
 app.get('/createListing', auth.isAuthorized, async function (req, res) {
+    //dasdasd
     res.render('pages/createListing');
 
 })
