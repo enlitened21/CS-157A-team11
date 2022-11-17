@@ -19,20 +19,20 @@ module.exports = (sequelize, DataTypes) => {
         timestamps: false
     });
 
-    Favourite.associate = models => {
-        Favourite.belongsTo(models.Customer, {
-            foreignKey: {
-                allowNull: false,
-                name: "customer_id"
-            }
-        }),
-        Favourite.belongsTo(models.Product, {
-            foreignKey: {
-                allowNull: false,
-                name: "product_id"
-            }
-        });
-    };
+    // Favourite.associate = models => {
+    //     Favourite.belongsTo(models.Customer, {
+    //         foreignKey: {
+    //             allowNull: false,
+    //             name: "customer_id"
+    //         }
+    //     }),
+    //     Favourite.belongsTo(models.Product, {
+    //         foreignKey: {
+    //             allowNull: false,
+    //             name: "product_id"
+    //         }
+    //     });
+    // };
 
     return Favourite;
 };
