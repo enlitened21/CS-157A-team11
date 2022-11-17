@@ -55,7 +55,6 @@ app.post('/', async function(req, res){
         }
       });
 
-    console.log("in / , " + customers);  
     if (customers.length > 0) {
         req.session.customer_id = customers[0].customer_id;
         res.redirect('/index')
@@ -72,25 +71,6 @@ app.get('/index', auth.isAuthorized, async function(req, res){
 })
 
 app.post('/add_to_cart', auth.isAuthorized, async function(req, res){
-    // var id = req.body.id;
-    // var name = req.body.name;
-    // var category = req.body.category;
-    // var image = req.body.image;
-    // var product = {id:id, name:name, category:category, image:image}
-
-    // if(req.session.cart){
-    //     var cart = req.session.cart;
-
-    //     if (!isProductInCart(cart, id)){
-    //         cart.push(product)
-    //     } 
-    // } else{
-    //     req.session.cart = [product];
-    //     var cart = req.session.cart;
-    // }
-     
-    // res.redirect('/cart');
-
     var product_id = req.body.id;
     var customer_id = req.session.customer_id;
     var currentCart = await Cart.findAll({
@@ -108,7 +88,15 @@ app.post('/add_to_cart', auth.isAuthorized, async function(req, res){
 
 app.get('/cart', auth.isAuthorized, async function(req, res){
     //var cart = req.session.cart;
-    
+    var customer_id = req.session.customer_id;
+
+    var Products = await Cart.findAll({
+        where: {
+            customer_id: customer_id,
+        }
+    })
+
+
     res.render('pages/cart', {cart:cart});
 
 })
@@ -146,7 +134,6 @@ app.post('/signUp', async function(req, res) {
 
       if (customers.length == 0){
         const newCustomer = await Customer.create({ first_name: first_name, last_name: last_name, username: username, password: password });
-        console.log("New Customer's auto-generated ID:", newCustomer.customer_id);
         res.redirect('/index')
       } else{
         res.redirect('/signUp')
