@@ -128,14 +128,10 @@
                                 <span>
                                     <%= item.name %>
                                 </span>
-                                <span>Category: <%= item.category %></span>
                                 <span>Quantity: <%= item.quantity %></span>
 
                                 <form action="/add_to_cart" method="post">
-                                    <input type="hidden" name="id" value="<%= item.id %>">
-                                    <input type="hidden" name="name" value="<%= item.name %>">
-                                    <input type="hidden" name="category" value="<%= item.category %>">
-                                    <input type="hidden" name="image" value="<%= item.image %>">
+                                    <input type="hidden" name="product_id" value="<%= item.product_id %>">
                                     <input type="hidden" name="quantity" value="<%= item.quantity %>">
                                     <input type="submit" value="Add to cart" class="btn btn-primary">
                                 </form>

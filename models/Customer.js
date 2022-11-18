@@ -37,6 +37,6 @@ module.exports = (sequelize, DataTypes) => {
                 name: "customer_id"
             }
         });
-
-        return Customer;
-    }
+    };
+    return Customer;
+};

@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 const encoder = bodyParser.urlencoded();
 var mysql = require('mysql');
 var session = require('express-session');
-const { Product, Customer, Cart } = require("./models");
+const { Product, Customer, Cart, CartProduct } = require("./models");
 const { sequelize, Sequelize } = require("./models/index");
 var auth = require('./auth');
 
@@ -72,20 +72,25 @@ app.get('/index', auth.isAuthorized, async function (req, res) {
 })
 
 app.post('/add_to_cart', auth.isAuthorized, async function (req, res) {
-    var product_id = req.body.id;
-    var customer_id = req.session.customer_id;
-    var currentCart = await Cart.findAll({
-        where: {
-            customer_id: customer_id,
-            product_id: product_id
-        }
-    });
-    if (currentCart === null) {
-        const addProduct = await Cart.create({ customer_id: customer_id, product_id: product_id });
-        // add
+    let cart = await Cart.findOne({ where: { customer_id: req.session.customer_id } });
+    if (cart === null) {
+        cart = await Cart.create({
+            customer_id: req.session.customer_id
+        });
     }
-    res.redirect('/cart');
-
+    let cartProduct = await CartProduct.findOne({ where: { cart_id: cart.cart_id, product_id: req.body.product_id } });
+    if (cartProduct === null) {
+        cartProduct = await CartProduct.create({
+            cart_id: cart.cart_id,
+            product_id: req.body.product_id,
+            quantity: req.body.quantity
+        });
+    } else {
+        cartProduct.set({
+            quantity: cartProduct.quantity + parseInt(req.body.quantity)
+        });
+        await cartProduct.save();
+    }
 })
 
 app.get('/cart', auth.isAuthorized, async function (req, res) {
@@ -135,7 +140,6 @@ app.post('/signUp', async function (req, res) {
 
 //Create Listing get request
 app.get('/createListing', auth.isAuthorized, async function (req, res) {
-    //dasdasd
     res.render('pages/createListing');
 
 })

@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
     const Product = sequelize.define("Product", {
-        id: {
+        product_id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             allowNull: false,
@@ -10,8 +10,8 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
-        category: {
-            type: DataTypes.STRING
+        category_id: {
+            type: DataTypes.INTEGER
         },
         image: {
             type: DataTypes.STRING,
@@ -37,16 +37,12 @@ module.exports = (sequelize, DataTypes) => {
                 name: "category_id"
             }
         }),
-        Product.belongsToMany(models.Order, {
-            through: models.OrderProduct,
-            foreignKey: 'product_id',
-            timestamps: false
-        }),
-        Product.belongsToMany(models.Cart, {
-            through: models.CartProduct,
-            foreignKey: 'product_id',
-            timestamps: false
-        });
+            Product.belongsToMany(models.Cart, {
+                through: models.CartProduct,
+                foreignKey: 'product_id',
+                timestamps: false
+            });
+    };
 
     return Product;
-}
+};
