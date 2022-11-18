@@ -94,21 +94,15 @@ app.post('/add_to_cart', auth.isAuthorized, async function (req, res) {
 })
 
 app.get('/cart', auth.isAuthorized, async function (req, res) {
-    res.render('pages/cart');
-
+    const products = await sequelize.query(" SELECT * FROM products, cartProduct WHERE products.product_id = cartProduct.product_id; ")
+    console.log("ffffffffffffffffffffffffffffffffffffffffff");
+    console.log(products);
+    res.render('pages/cart', { result: products });
 })
 
 
 app.post('/remove_product', auth.isAuthorized, function (req, res) {
-    // var id = req.body.id;
-    // var cart = req.session.cart;
 
-    // for (let i = 0; i < cart.length; i++) {
-    //     if (cart[i].id == id) {
-    //         cart.splice(cart.indexOf(i), i);
-    //     }
-    // }
-    // res.redirect('/cart');
 })
 
 app.get('/signUp', function (req, res) {
