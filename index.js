@@ -7,6 +7,7 @@ var session = require('express-session');
 const { Product, Customer, Cart, CartProduct, Favourite } = require("./models");
 const { sequelize, Sequelize } = require("./models/index");
 var auth = require('./auth');
+var alert = require('alert');
 
 const connection = mysql.createConnection({
     host: "localhost",
@@ -31,15 +32,8 @@ app.listen(8080);
 app.use(session({ secret: "secret" }))
 
 
-function isProductInCart(cart, id) {
-    for (let i = 0; i < cart.length; i++) {
-        if (cart[i].id == id) {
-            return true;
-        }
-    }
-    return false;
-}
 
+// display login page
 app.get('/', function (req, res) {
     res.render('pages/login');
 })
@@ -66,11 +60,15 @@ app.post('/', async function (req, res) {
 
 })
 
+
+// display home page
 app.get('/index', auth.isAuthorized, async function (req, res) {
     const products = await Product.findAll();
     res.render('pages/index.ejs', { result: products });
 })
 
+
+// cart post request, add product to cart
 app.post('/add_to_cart', auth.isAuthorized, async function (req, res) {
     let cart = await Cart.findOne({ where: { customer_id: req.session.customer_id } });
     if (cart === null) {
@@ -93,21 +91,21 @@ app.post('/add_to_cart', auth.isAuthorized, async function (req, res) {
     }
 })
 
+
+// display cart page, get request
 app.get('/cart', auth.isAuthorized, async function (req, res) {
     const products = await sequelize.query(" SELECT * FROM products, cartProduct WHERE products.product_id = cartProduct.product_id; ")
     res.render('pages/cart', { result: products });
 })
 
 
-app.post('/remove_product', auth.isAuthorized, function (req, res) {
-
-})
-
+// signup get request, display sigUp
 app.get('/signUp', function (req, res) {
     res.render('pages/signUp');
 })
 
 
+// signup post request
 app.post('/signUp', async function (req, res) {
     var first_name = req.body.first_name;
     var last_name = req.body.last_name;
@@ -137,6 +135,7 @@ app.get('/createListing', auth.isAuthorized, async function (req, res) {
 })
 
 
+// create listing post request
 app.post('/createListing', auth.isAuthorized, async function (req, res) {
     var product_name = req.body.product_name;
     var product_category = req.body.product_category;
@@ -158,6 +157,7 @@ app.post('/createListing', auth.isAuthorized, async function (req, res) {
 })
 
 
+// add products to favourite
 app.post('/add_to_favourite', async (req, res) => {
     const favourite = await Favourite.findOne({ where: { customer_id: req.session.customer_id, product_id: req.body.product_id } });
     if (favourite === null) {
@@ -179,26 +179,29 @@ app.post('/add_to_favourite', async (req, res) => {
 });
 
 
+// favourites page
 app.get('/favourite', async (req, res) => {
-    // const favourites = await Favourite.findAll({
-    //     where: { customer_id: req.session.customer_id },
-    //     include: {
-    //         model: Product,
-    //         required: true
-    //     }
-    // });
     const favourites = await sequelize.query("SELECT * FROM `favourite` AS `Favourite` INNER JOIN `products` AS `Product` ON `Favourite`.`product_id` = `Product`.`product_id` WHERE `Favourite`.`customer_id` = " + req.session.customer_id)
-    // SELECT * FROM `favourite` AS `Favourite` INNER JOIN `products` AS `Product` ON `Favourite`.`product_id` = `Product`.`product_id` WHERE `Favourite`.`customer_id` = 1;
-    // const member = await Member.findOne({ where: { id: req.user.id } });
-    // const response = {
-    //     favourites: favourites,
-    //     memberInfo: {
-    //         photo: member.photo,
-    //         userName: member.first_name
-    //     }
-    // }
     console.log(favourites)
     res.render('pages/favourite', { result: favourites });
 });
+
+
+// cart remove
+app.post('/remove_from_cart', async (req, res) => {
+    let cart = await Cart.findOne({ where: { customer_id: req.session.customer_id } });
+    if (cart === null) {
+        alert("cart is empty");
+    }
+    let cartProduct = await CartProduct.findOne({ where: { cart_id: cart.cart_id, product_id: req.body.product_id } });
+    if (cartProduct === null) {
+        alert("This product isn't there inside this member's cart");
+    } else {
+        await CartProduct.destroy({ where: { cart_id: cart.cart_id, product_id: req.body.product_id } });
+        const products = await sequelize.query(" SELECT * FROM products, cartProduct WHERE products.product_id = cartProduct.product_id; ")
+        res.render('pages/cart', { result: products });
+    }
+});
+
 
 console.log("server running on port 8080");
