@@ -64,7 +64,7 @@
                                         <li class="active"> <a href="/index">Home</a> </li>
                                         <li> <a href="/cart">Cart</a> </li>
                                         <li><a href="/createListing">Create Listing</a></li>
-                                        <li><a href="contact.html">Link 4</a></li>
+                                        <li><a href="/favourite">Favourites</a></li>
                                         <li class="last">
                                             <a href="#"><img src="images/search_icon.png" alt="icon" /></a>
                                         </li>
@@ -130,10 +130,19 @@
                                 </span>
                                 <span>Quantity: <%= item.quantity %></span>
 
+
+                                <!--  add to cart form -->
                                 <form action="/add_to_cart" method="post">
                                     <input type="hidden" name="product_id" value="<%= item.product_id %>">
                                     <input type="hidden" name="quantity" value="<%= item.quantity %>">
                                     <input type="submit" value="Add to cart" class="btn btn-primary">
+                                </form>
+
+
+                                <!-- add to fav form -->
+                                <form action="/add_to_favourite" method="post">
+                                    <input type="hidden" name="product_id" value="<%= item.product_id %>">
+                                    <input type="submit" value="Add to favourite" class="btn btn-primary">
                                 </form>
                             </div>
                         </div>

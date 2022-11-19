@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 const encoder = bodyParser.urlencoded();
 var mysql = require('mysql');
 var session = require('express-session');
-const { Product, Customer, Cart, CartProduct } = require("./models");
+const { Product, Customer, Cart, CartProduct, Favourite } = require("./models");
 const { sequelize, Sequelize } = require("./models/index");
 var auth = require('./auth');
 
@@ -95,8 +95,6 @@ app.post('/add_to_cart', auth.isAuthorized, async function (req, res) {
 
 app.get('/cart', auth.isAuthorized, async function (req, res) {
     const products = await sequelize.query(" SELECT * FROM products, cartProduct WHERE products.product_id = cartProduct.product_id; ")
-    console.log("ffffffffffffffffffffffffffffffffffffffffff");
-    console.log(products);
     res.render('pages/cart', { result: products });
 })
 
@@ -158,5 +156,49 @@ app.post('/createListing', auth.isAuthorized, async function (req, res) {
     }
     res.end();
 })
+
+
+app.post('/add_to_favourite', async (req, res) => {
+    const favourite = await Favourite.findOne({ where: { customer_id: req.session.customer_id, product_id: req.body.product_id } });
+    if (favourite === null) {
+        //Add a favourite
+        await Favourite.create({
+            customer_id: req.session.customer_id,
+            product_id: req.body.product_id
+        });
+    } else {
+        //Remove from favourite
+        await Favourite.destroy({ where: { id: favourite.id } });
+    }
+    //Return the updated list of favourites
+    const favourites = await Favourite.findAll({ where: { customer_id: req.session.customer_id }, attributes: ['product_id'] });
+    let favouritedProductIds = [];
+    favourites.forEach((favourite) => {
+        favouritedProductIds.push(favourite.product_id);
+    });
+});
+
+
+app.get('/favourite', async (req, res) => {
+    // const favourites = await Favourite.findAll({
+    //     where: { customer_id: req.session.customer_id },
+    //     include: {
+    //         model: Product,
+    //         required: true
+    //     }
+    // });
+    const favourites = await sequelize.query("SELECT * FROM `favourite` AS `Favourite` INNER JOIN `products` AS `Product` ON `Favourite`.`product_id` = `Product`.`product_id` WHERE `Favourite`.`customer_id` = " + req.session.customer_id)
+    // SELECT * FROM `favourite` AS `Favourite` INNER JOIN `products` AS `Product` ON `Favourite`.`product_id` = `Product`.`product_id` WHERE `Favourite`.`customer_id` = 1;
+    // const member = await Member.findOne({ where: { id: req.user.id } });
+    // const response = {
+    //     favourites: favourites,
+    //     memberInfo: {
+    //         photo: member.photo,
+    //         userName: member.first_name
+    //     }
+    // }
+    console.log(favourites)
+    res.render('pages/favourite', { result: favourites });
+});
 
 console.log("server running on port 8080");
