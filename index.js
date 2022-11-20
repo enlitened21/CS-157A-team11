@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 const encoder = bodyParser.urlencoded();
 var mysql = require('mysql');
 var session = require('express-session');
-const { Product, Customer, Cart, CartProduct, Favourite } = require("./models");
+const { Product, Customer, Cart, CartProduct, Favourite, ContactUs } = require("./models");
 const { sequelize, Sequelize } = require("./models/index");
 var auth = require('./auth');
 var alert = require('alert');
@@ -137,23 +137,23 @@ app.get('/createListing', auth.isAuthorized, async function (req, res) {
 
 // create listing post request
 app.post('/createListing', auth.isAuthorized, async function (req, res) {
-    var product_name = req.body.product_name;
-    var product_category = req.body.product_category;
-    var product_image = req.body.product_image;
-
     const products = await Product.findAll({
         where: {
-            name: product_name
+            name: req.body.product_name
         }
     });
 
     if (products.length == 0) {
-        const newProduct = await Product.create({ name: product_name, category: product_category, image: product_image });
+        const newProduct = await Product.create({
+            name: req.body.product_name,
+            category_id: req.body.product_category_id,
+            image: req.body.product_image,
+            quantity: req.body.product_quantity
+        });
         res.redirect('/index')
     } else {
         res.redirect('/createListing')
     }
-    res.end();
 })
 
 
@@ -202,6 +202,15 @@ app.post('/remove_from_cart', async (req, res) => {
         res.render('pages/cart', { result: products });
     }
 });
+
+app.post('/contact_us', async (req, res) => {
+    await ContactUs.create({
+        customer_id: req.session.customer_id,
+        phone_number: req.body.phone_number,
+        message: req.body.message
+    });
+    res.redirect("/index");
+})
 
 
 console.log("server running on port 8080");
