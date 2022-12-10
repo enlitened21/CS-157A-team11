@@ -62,14 +62,14 @@ app.post('/', async function (req, res) {
 
 
 // display home page
-app.get('/index', auth.isAuthorized, async function (req, res) {
+app.get('/index', async function (req, res) {
     const products = await Product.findAll();
     res.render('pages/index.ejs', { result: products });
 })
 
 
 // cart post request, add product to cart
-app.post('/add_to_cart', auth.isAuthorized, async function (req, res) {
+app.post('/add_to_cart', async function (req, res) {
     let cart = await Cart.findOne({ where: { customer_id: req.session.customer_id } });
     if (cart === null) {
         cart = await Cart.create({
@@ -93,7 +93,7 @@ app.post('/add_to_cart', auth.isAuthorized, async function (req, res) {
 
 
 // display cart page, get request
-app.get('/cart', auth.isAuthorized, async function (req, res) {
+app.get('/cart', async function (req, res) {
     const products = await sequelize.query(" SELECT * FROM products, cartProduct WHERE products.product_id = cartProduct.product_id; ")
     res.render('pages/cart', { result: products });
 })
@@ -129,14 +129,14 @@ app.post('/signUp', async function (req, res) {
 })
 
 //Create Listing get request
-app.get('/createListing', auth.isAuthorized, async function (req, res) {
+app.get('/createListing', async function (req, res) {
     res.render('pages/createListing');
 
 })
 
 
 // create listing post request
-app.post('/createListing', auth.isAuthorized, async function (req, res) {
+app.post('/createListing', async function (req, res) {
     const products = await Product.findAll({
         where: {
             name: req.body.product_name
@@ -177,6 +177,22 @@ app.post('/add_to_favourite', async (req, res) => {
         favouritedProductIds.push(favourite.product_id);
     });
 });
+
+// remove from favourites
+// app.post('/remove_from_favourite', async (req, res) => {
+//     const favourite = await Favourite.findOne({ where: { customer_id: req.session.customer_id, product_id: req.body.favourite_product_id } });
+//     if (favourite === null) {
+//         alert("favourite is empty");
+//     }
+//     let favouriteProducts = await Favourite.findOne({ where: { customer_id: req.session.customer_id, product_id: req.body.favourite_product_id } });
+//     if (favouriteProducts === null) {
+//         alert("This product isn't there inside this member's cart");
+//     } else {
+//         await Favourite.destroy({ where: { customer_id: req.session.customer_id, product_id: req.body.favourite_product_id } });
+//         const favourites = await sequelize.query("SELECT * FROM `favourite` AS `Favourite` INNER JOIN `products` AS `Product` ON `Favourite`.`product_id` = `Product`.`product_id` WHERE `Favourite`.`customer_id` = " + req.session.customer_id)
+//         res.render('pages/favourite', { result: favourites });
+//     }
+// });
 
 
 // favourites page
